@@ -73,7 +73,11 @@ module Rack
         end
       end
 
+      # `value` can be `nil` when clearing a cookie. Some applications set the
+      # cookie value to the empty string instead of, or in addition to, setting
+      # an expiration date in the past.
       def redact(value)
+        # return if value.nil?
         value[0, 3] + '.. (redacted)'
       end
 

@@ -53,7 +53,12 @@ module Rack
             cookies = [
               'timestamp=2021-01-14T20%3A19%3A37Z; domain=example.com; ' +
                 'path=/; expires=Tue, 14 Jan 2121 20:19:37 GMT; HttpOnly; SameSite=Strict',
-              'my_session=deadbeef; path=/; HttpOnly; SameSite=Strict'
+
+              # a cookie whose value should be redacted in logs
+              'my_session=deadbeef; path=/; HttpOnly; SameSite=Strict',
+
+              # clearing a defunct cookie by using the empty string
+              'defunct=; path=/; HttpOnly; SameSite=Strict',
             ]
             app = double(call: [
               200,
@@ -72,6 +77,7 @@ module Rack
                 CookieLogger: No request cookies
                 CookieLogger: Response cookie: #{cookies[0]}
                 CookieLogger: Response cookie: #{redacted}
+                CookieLogger: Response cookie: #{cookies[2]}
               EOS
             )
           end
