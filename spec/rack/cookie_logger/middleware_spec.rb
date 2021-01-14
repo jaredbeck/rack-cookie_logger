@@ -58,7 +58,7 @@ module Rack
               'my_session=deadbeef; path=/; HttpOnly; SameSite=Strict',
 
               # clearing a defunct cookie by using the empty string
-              'defunct=; path=/; HttpOnly; SameSite=Strict',
+              'defunct_session=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT',
             ]
             app = double(call: [
               200,
